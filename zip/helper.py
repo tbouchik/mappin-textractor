@@ -2,15 +2,18 @@ import boto3
 from botocore.client import Config
 import os
 import csv
+import errno
+
 
 class AwsHelper:
     def getClient(self, name, awsRegion):
         config = Config(
-            retries = dict(
-                max_attempts = 30
+            retries=dict(
+                max_attempts=30
             )
         )
         return boto3.client(name, region_name=awsRegion, config=config)
+
 
 class S3Helper:
     @staticmethod
@@ -56,6 +59,7 @@ class S3Helper:
 
         return files
 
+
 class FileHelper:
     @staticmethod
     def getFileNameAndExtension(filePath):
@@ -73,7 +77,6 @@ class FileHelper:
         dn, dext = os.path.splitext(basename)
         return dext[1:]
 
-
     @staticmethod
     def readFile(fileName):
         with open(fileName, 'r') as document:
@@ -81,13 +84,26 @@ class FileHelper:
 
     @staticmethod
     def writeToFile(fileName, content):
+        if not os.path.exists(os.path.dirname(fileName)):
+            try:
+                os.makedirs(os.path.dirname(fileName))
+            except OSError as exc:  # Guard against race condition
+                if exc.errno != errno.EEXIST:
+                    raise
         with open(fileName, 'w') as document:
             document.write(content)
 
     @staticmethod
     def writeToFileWithMode(fileName, content, mode):
+        if not os.path.exists(os.path.dirname(fileName)):
+            try:
+                os.makedirs(os.path.dirname(fileName))
+            except OSError as exc:  # Guard against race condition
+                if exc.errno != errno.EEXIST:
+                    raise
         with open(fileName, mode) as document:
             document.write(content)
+
     @staticmethod
     def getFilesInFolder(path, fileTypes):
         for file in os.listdir(path):
@@ -107,6 +123,12 @@ class FileHelper:
 
     @staticmethod
     def writeCSV(fileName, fieldNames, csvData):
+        if not os.path.exists(os.path.dirname(fileName)):
+            try:
+                os.makedirs(os.path.dirname(fileName))
+            except OSError as exc:  # Guard against race condition
+                if exc.errno != errno.EEXIST:
+                    raise
         with open(fileName, 'w') as csv_file:
             writer = csv.DictWriter(csv_file, fieldnames=fieldNames)
             writer.writeheader()
@@ -121,6 +143,12 @@ class FileHelper:
 
     @staticmethod
     def writeCSVRaw(fileName, csvData):
+        if not os.path.exists(os.path.dirname(fileName)):
+            try:
+                os.makedirs(os.path.dirname(fileName))
+            except OSError as exc:  # Guard against race condition
+                if exc.errno != errno.EEXIST:
+                    raise
         with open(fileName, 'w') as csv_file:
             writer = csv.writer(csv_file)
             for item in csvData:
