@@ -1,1 +1,8 @@
 .DS_Store
+*.pyc
+*.cpython-37.pyc
+__pycache__/
+
+zip/__pycache__/
+
+

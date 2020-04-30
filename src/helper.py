@@ -2,6 +2,7 @@ import boto3
 from botocore.client import Config
 import os
 import csv
+import errno
 
 class AwsHelper:
     def getClient(self, name, awsRegion):
@@ -81,12 +82,24 @@ class FileHelper:
 
     @staticmethod
     def writeToFile(fileName, content):
-        with open(fileName, 'w') as document:
+        if not os.path.exists(os.path.dirname(fileName)):
+            try:
+                os.makedirs(os.path.dirname(fileName))
+            except OSError as exc:  
+                if exc.errno != errno.EEXIST:
+                    raise
+        with open(os.path.join(fileName), 'w') as document:
             document.write(content)
 
     @staticmethod
     def writeToFileWithMode(fileName, content, mode):
-        with open(fileName, mode) as document:
+        if not os.path.exists(os.path.dirname(fileName)):
+            try:
+                os.makedirs(os.path.dirname(fileName))
+            except OSError as exc:  
+                if exc.errno != errno.EEXIST:
+                    raise
+        with open(os.path.join(fileName), mode) as document:
             document.write(content)
     @staticmethod
     def getFilesInFolder(path, fileTypes):
@@ -107,7 +120,13 @@ class FileHelper:
 
     @staticmethod
     def writeCSV(fileName, fieldNames, csvData):
-        with open(fileName, 'w') as csv_file:
+        if not os.path.exists(os.path.dirname(fileName)):
+            try:
+                os.makedirs(os.path.dirname(fileName))
+            except OSError as exc:  
+                if exc.errno != errno.EEXIST:
+                    raise
+        with open(os.path.join(fileName), 'w') as csv_file:
             writer = csv.DictWriter(csv_file, fieldnames=fieldNames)
             writer.writeheader()
 
@@ -121,7 +140,13 @@ class FileHelper:
 
     @staticmethod
     def writeCSVRaw(fileName, csvData):
-        with open(fileName, 'w') as csv_file:
+        if not os.path.exists(os.path.dirname(fileName)):
+            try:
+                os.makedirs(os.path.dirname(fileName))
+            except OSError as exc:  
+                if exc.errno != errno.EEXIST:
+                    raise
+        with open(os.path.join(fileName), 'w') as csv_file:
             writer = csv.writer(csv_file)
             for item in csvData:
                 writer.writerow(item)
