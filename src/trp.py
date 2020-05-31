@@ -277,6 +277,7 @@ class Field:
     def __init__(self, block, blockMap):
         self._key = None
         self._value = None
+        self._boundingBox =  block["Geometry"]["BoundingBox"]
 
         for item in block['Relationships']:
             if(item["Type"] == "CHILD"):
@@ -307,6 +308,10 @@ class Field:
     @property
     def value(self):
         return self._value
+    
+    @property
+    def boundingBox(self):
+        return self._boundingBox
 
 class Form:
     def __init__(self):
