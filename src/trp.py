@@ -277,7 +277,8 @@ class Field:
     def __init__(self, block, blockMap):
         self._key = None
         self._value = None
-        self._boundingBox =  block["Geometry"]["BoundingBox"]
+        self._keyBoundingBox =  block["Geometry"]["BoundingBox"]
+        self._valueBoundingBox = None
 
         for item in block['Relationships']:
             if(item["Type"] == "CHILD"):
@@ -290,6 +291,7 @@ class Field:
                             for vitem in vkvs['Relationships']:
                                 if(vitem["Type"] == "CHILD"):
                                     self._value = FieldValue(vkvs, vitem['Ids'], blockMap)
+                                    self._valueBoundingBox = vkvs["Geometry"]["BoundingBox"]
     def __str__(self):
         s = "\nField\n==========\n"
         k = ""
@@ -310,8 +312,12 @@ class Field:
         return self._value
     
     @property
-    def boundingBox(self):
-        return self._boundingBox
+    def keyBoundingBox(self):
+        return self._keyBoundingBox
+
+    @property
+    def valueBoundingBox(self):
+        return self._valueBoundingBox
 
 class Form:
     def __init__(self):

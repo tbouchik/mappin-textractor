@@ -111,7 +111,7 @@ class Textractor:
         #Generate output files
         print("Generating output...")
         name, ext = FileHelper.getFileNameAndExtension(document)
-        opg = OutputGenerator(response, os.path.join(ips["output"],"{}-{}/{}-{}".format(name, ext, name, ext)),
+        opg = OutputGenerator(response, os.path.join(ips["output"],"{}-{}".format(name, ext, name, ext)),
                     ips["forms"], ips["tables"])
         opg.run()
 

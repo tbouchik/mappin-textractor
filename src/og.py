@@ -49,12 +49,18 @@ class OutputGenerator:
             else:
                 csvItem.append("")
                 csvItem.append("")
-            csvItem.append(field.boundingBox["Top"])
-            csvItem.append(field.boundingBox["Height"])
-            csvItem.append(field.boundingBox["Width"])
-            csvItem.append(field.boundingBox["Left"])
+            if(field.keyBoundingBox):
+                csvItem.append(field.keyBoundingBox["Top"])
+                csvItem.append(field.keyBoundingBox["Height"])
+                csvItem.append(field.keyBoundingBox["Width"])
+                csvItem.append(field.keyBoundingBox["Left"])
+            if(field.valueBoundingBox):
+                csvItem.append(field.valueBoundingBox["Top"])
+                csvItem.append(field.valueBoundingBox["Height"])
+                csvItem.append(field.valueBoundingBox["Width"])
+                csvItem.append(field.valueBoundingBox["Left"])
             csvData.append(csvItem)
-        csvFieldNames = ['Key', 'KeyConfidence', 'Value', 'ValueConfidence', 'Top', 'Height', 'Width', 'Left']
+        csvFieldNames = ['Key', 'KeyConfidence', 'Value', 'ValueConfidence', 'KeyTop', 'KeyHeight', 'KeyWidth', 'KeyLeft', 'ValueTop', 'ValueHeight', 'ValueWidth', 'ValueLeft']
         FileHelper.writeCSV("{}-page-{}-forms.csv".format(self.fileName, p), csvFieldNames, csvData)
 
     def _outputTable(self, page, p):
