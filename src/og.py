@@ -32,6 +32,17 @@ class OutputGenerator:
 
         textInReadingOrder = page.getTextInReadingOrder()
         FileHelper.writeToFile("{}-page-{}-text-inreadingorder.txt".format(self.fileName, p), textInReadingOrder)
+        
+    def _outputTextCSV(self, page, p):
+        csvData = []
+        linestInReadingOrder = page.getLinesInReadingOrder()
+        for line in linestInReadingOrder:
+            csvItem  = []
+            for item in line[1:]:
+                csvItem.append(item)
+            csvData.append(csvItem)
+        csvFieldNames = ['Text', 'Width', 'Height', 'Left', 'Top']
+        FileHelper.writeCSV("{}-page-{}-text-inreadingorder.csv".format(self.fileName, p), csvFieldNames, csvData)
 
     def _outputForm(self, page, p):
         csvData = []
@@ -96,7 +107,7 @@ class OutputGenerator:
 
             self._outputWords(page, p)
 
-            self._outputText(page, p)
+            self._outputTextCSV(page, p)
 
             if(self.forms):
                 self._outputForm(page, p)

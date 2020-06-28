@@ -546,12 +546,12 @@ class Page:
                     column_centre = column['left'] + column['right']/2
                     if (bbox_centre > column['left'] and bbox_centre < column['right']) or (column_centre > bbox_left and column_centre < bbox_right):
                         #Bbox appears inside the column
-                        lines.append([index, item.text])
+                        lines.append([index, item.text, item.geometry.boundingBox.width, item.geometry.boundingBox.height, item.geometry.boundingBox.left, item.geometry.boundingBox.top])
                         column_found=True
                         break
                 if not column_found:
                     columns.append({'left':item.geometry.boundingBox.left, 'right':item.geometry.boundingBox.left + item.geometry.boundingBox.width})
-                    lines.append([len(columns)-1, item.text])
+                    lines.append([len(columns)-1, item.text, item.geometry.boundingBox.width, item.geometry.boundingBox.height, item.geometry.boundingBox.left, item.geometry.boundingBox.top])
 
         lines.sort(key=lambda x: x[0])
         return lines
