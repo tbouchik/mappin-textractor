@@ -34,10 +34,13 @@ class OutputGenerator:
         FileHelper.writeToFile("{}-page-{}-text-inreadingorder.txt".format(self.fileName, p), textInReadingOrder)
         
     def _outputTextCSV(self, page, p):
+        print('PYTHON:::: inside OUTPUT TEXT CSV --------------------------------')
         csvData = []
         linestInReadingOrder = page.getLinesInReadingOrder()
+         print('PYTHON:::: LEENNGTH--------------------------------',len(linestInReadingOrder) )
         for line in linestInReadingOrder:
             csvItem  = []
+            print('PYTHON:::: LINE--------------------------------',line )
             for item in line[1:]:
                 csvItem.append(item)
             csvData.append(csvItem)
