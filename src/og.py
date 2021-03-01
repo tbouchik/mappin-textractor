@@ -37,7 +37,7 @@ class OutputGenerator:
         print('PYTHON:::: inside OUTPUT TEXT CSV --------------------------------')
         csvData = []
         linestInReadingOrder = page.getLinesInReadingOrder()
-         print('PYTHON:::: LEENNGTH--------------------------------',len(linestInReadingOrder) )
+        print('PYTHON:::: LEENNGTH--------------------------------',len(linestInReadingOrder) )
         for line in linestInReadingOrder:
             csvItem  = []
             print('PYTHON:::: LINE--------------------------------',line )
