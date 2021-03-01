@@ -106,9 +106,9 @@ class OutputGenerator:
         p = 1
         for page in self.document.pages:
 
-            FileHelper.writeToFile("{}-page-{}-response.json".format(self.fileName, p), json.dumps(page.blocks))
+            # FileHelper.writeToFile("{}-page-{}-response.json".format(self.fileName, p), json.dumps(page.blocks))
 
-            self._outputWords(page, p)
+            # self._outputWords(page, p)
 
             self._outputTextCSV(page, p)
 
