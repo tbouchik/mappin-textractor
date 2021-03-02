@@ -6,7 +6,8 @@ import time
 from tdp import DocumentProcessor
 from og import OutputGenerator
 from helper import FileHelper, S3Helper
-
+import pdb_attach
+pdb_attach.listen(5000)
 class Textractor:
     def getInputParameters(self, args):
         event = {}
