@@ -40,7 +40,6 @@ class OutputGenerator:
         print('PYTHON:::: LEENNGTH--------------------------------',len(linestInReadingOrder) )
         for line in linestInReadingOrder:
             csvItem  = []
-            print('PYTHON:::: LINE--------------------------------',line )
             for item in line[1:]:
                 csvItem.append(item)
             csvData.append(csvItem)
