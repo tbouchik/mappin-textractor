@@ -108,8 +108,6 @@ class OutputGenerator:
             # FileHelper.writeToFile("{}-page-{}-response.json".format(self.fileName, p), json.dumps(page.blocks))
 
             # self._outputWords(page, p)
-            import pdb
-            pdb.set_trace()
             self._outputTextCSV(page, p)
 
             if(self.forms):
