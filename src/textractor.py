@@ -133,6 +133,8 @@ class Textractor:
 
         ips = None
         try:
+            import pdb
+            pdb.set_trace()
             ips = self.validateInput(sys.argv)
         except Exception as e:
             self.printFormatException(e)
