@@ -47,15 +47,13 @@ class OutputGenerator:
         FileHelper.writeCSV("{}-page-{}-text-inreadingorder.csv".format(self.fileName, p), csvFieldNames, csvData)
 
     def _returnJSON(self, page, p):
-        csvData = []
+        jsonData = []
+        jsonFieldNames = ['Text', 'Width', 'Height', 'Left', 'Top']
         linestInReadingOrder = page.getLinesInReadingOrder()
         for line in linestInReadingOrder:
-            csvItem  = []
-            for item in line[1:]:
-                csvItem.append(item)
-            csvData.append(csvItem)
-        csvFieldNames = ['Text', 'Width', 'Height', 'Left', 'Top']
-        FileHelper.writeCSV("{}-page-{}-text-inreadingorder.csv".format(self.fileName, p), csvFieldNames, csvData)
+            jsonItem = dict(zip(jsonFieldNames, line[1:]))
+            jsonData.append(jsonItem)
+        return jsonData
 
     def _outputForm(self, page, p):
         csvData = []
@@ -109,25 +107,15 @@ class OutputGenerator:
         if(not self.document.pages):
             return
 
-        FileHelper.writeToFile("{}-response.json".format(self.fileName), json.dumps(self.response))
 
         print("Total Pages in Document: {}".format(len(self.document.pages)))
 
         p = 1
+        result = {}
         for page in self.document.pages:
-
-            # FileHelper.writeToFile("{}-page-{}-response.json".format(self.fileName, p), json.dumps(page.blocks))
-
-            # self._outputWords(page, p)
-            self._outputTextCSV(page, p)
-
-            if(self.forms):
-                self._outputForm(page, p)
-
-            if(self.tables):
-                self._outputTable(page, p)
-
+            result[f'page_{p}'] = self._returnJSON(page, p)
             p = p + 1
+        return result
 
     def _insights(self, start, subText, sentiment, syntax, entities, keyPhrases, ta):
         # Sentiment

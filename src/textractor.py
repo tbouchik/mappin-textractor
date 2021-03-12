@@ -100,9 +100,9 @@ class Textractor:
     
     def constructIps (self, event):
         ips = {}
-        ips["bucketName"] = event.bucketName
-        ips["documents"] = event.document
-        ips["awsRegion"] = event.region
+        ips["bucketName"] = event["bucketName"]
+        ips["documents"] = [event["document"]]
+        ips["awsRegion"] = event["region"]
         ips["text"] = True
         ips["forms"] = False
         ips["tables"] = False
@@ -129,12 +129,8 @@ class Textractor:
         name, ext = FileHelper.getFileNameAndExtension(document)
         opg = OutputGenerator(response, os.path.join(ips["output"],"{}-{}".format(name, ext, name, ext)),
                     ips["forms"], ips["tables"])
-        opg.run()
-
-        if(ips["insights"] or ips["medical-insights"] or ips["translate"]):
-            opg.generateInsights(ips["insights"], ips["medical-insights"], ips["translate"], ips["awsRegion"])
-
         print("{} textracted successfully.".format(document))
+        return opg.run()
 
     def printFormatException(self, e):
         print("Invalid input: {}".format(e))
@@ -166,7 +162,7 @@ class Textractor:
         print('*' * 60)
 
         
-        result = self.processDocument(ips, i, document)
+        result = self.processDocument(ips, i, ips["documents"][0])
 
 
         print("\n")
@@ -181,18 +177,10 @@ class Textractor:
 def handler(event, context):
     return Textractor().run(True, event)
 
-if __name__ == "__main__":
-    ctxt = {
-        bucketName:
-    }
-ips = {}
-        ips["bucketName"] = event.bucketName
-        ips["documents"] = event.document
-        ips["awsRegion"] = event.region
-        ips["text"] = True
-        ips["forms"] = False
-        ips["tables"] = False
-        ips["insights"] = False
-        ips["medical-insights"] = False
-        ips["translate"] = ""
-        ips["output"] = ""
+# if __name__ == "__main__":
+#     event = {
+#         'bucketName': "bucket413",
+#         'document': "bf79622c-c382-4abf-9dfb-9c9e63711127.jpg",
+#         'region':"us-east-1"
+#     }
+#     a = handler(dict(event), None)
