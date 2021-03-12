@@ -1,0 +1,23 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python : Fichier actuel",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Python: textractor.py",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/textractor.py",
+            "args" : ["--documents", "s3://bucket413/bf79622c-c382-4abf-9dfb-9c9e63711127.jpg", "--text", "--output", "/Users/bouchikhi/Documents/mappin/mappin-output/bf79622c-c382-4abf-9dfb-9c9e63711127-jpg"]
+        }
+    ]
+}
+//python3.7 /Users/bouchikhi/Documents/mappin/mappin-textractor/src/textractor.py --documents s3://bucket413/bf79622c-c382-4abf-9dfb-9c9e63711127.jpg --text --output /Users/bouchikhi/Documents/mappin/mappin-output/bf79622c-c382-4abf-9dfb-9c9e63711127-jpg
