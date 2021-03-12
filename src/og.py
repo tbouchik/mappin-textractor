@@ -46,6 +46,17 @@ class OutputGenerator:
         csvFieldNames = ['Text', 'Width', 'Height', 'Left', 'Top']
         FileHelper.writeCSV("{}-page-{}-text-inreadingorder.csv".format(self.fileName, p), csvFieldNames, csvData)
 
+    def _returnJSON(self, page, p):
+        csvData = []
+        linestInReadingOrder = page.getLinesInReadingOrder()
+        for line in linestInReadingOrder:
+            csvItem  = []
+            for item in line[1:]:
+                csvItem.append(item)
+            csvData.append(csvItem)
+        csvFieldNames = ['Text', 'Width', 'Height', 'Left', 'Top']
+        FileHelper.writeCSV("{}-page-{}-text-inreadingorder.csv".format(self.fileName, p), csvFieldNames, csvData)
+
     def _outputForm(self, page, p):
         csvData = []
         for field in page.form.fields:

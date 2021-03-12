@@ -97,6 +97,21 @@ class Textractor:
             ips["output"] = os.getcwd()
 
         return ips
+    
+    def constructIps (self, event):
+        ips = {}
+        ips["bucketName"] = event.bucketName
+        ips["documents"] = event.document
+        ips["awsRegion"] = event.region
+        ips["text"] = True
+        ips["forms"] = False
+        ips["tables"] = False
+        ips["insights"] = False
+        ips["medical-insights"] = False
+        ips["translate"] = ""
+        ips["output"] = ""
+
+        return ips
 
     def processDocument(self, ips, i, document):
         print("\nTextracting Document # {}: {}".format(i, document))
@@ -130,43 +145,54 @@ class Textractor:
         print('- python3 textractor.py --documents s3://mybucket/ --text --forms --tables')
         print('- python3 textractor.py --documents s3://mybucket/ --output ../results/ --text --forms --tables')
 
-    def run(self):
+    def run(self, useEvent = False, event = None):
 
         ips = None
         try:
-            ips = self.validateInput(sys.argv)
+            if useEvent:
+                ips = self.constructIps(event)
+            else:
+                ips = self.validateInput(sys.argv)
         except Exception as e:
             self.printFormatException(e)
 
         #try:
         i = 1
-        totalDocuments = len(ips["documents"])
+        totalDocuments = 1
 
         print("\n")
         print('*' * 60)
         print("Total input documents: {}".format(totalDocuments))
         print('*' * 60)
 
-        for document in ips["documents"]:
-            self.processDocument(ips, i, document)
+        
+        result = self.processDocument(ips, i, document)
 
-            remaining = len(ips["documents"])-i
-
-            if(remaining > 0):
-                print("\nRemaining documents: {}".format(remaining))
-
-                print("\nTaking a short break...")
-                time.sleep(20)
-                print("Allright, ready to go...\n")
-
-            i = i + 1
 
         print("\n")
         print('*' * 60)
         print("Successfully textracted documents: {}".format(totalDocuments))
         print('*' * 60)
         print("\n")
+        return result
         #except Exception as e:
         #    print("Something went wrong:\n====================================================\n{}".format(e))
 
-Textractor().run()
+def handler(event, context):
+    return Textractor().run(True, event)
+
+if __name__ == "__main__":
+    ctxt = {
+        bucketName:
+    }
+ips = {}
+        ips["bucketName"] = event.bucketName
+        ips["documents"] = event.document
+        ips["awsRegion"] = event.region
+        ips["text"] = True
+        ips["forms"] = False
+        ips["tables"] = False
+        ips["insights"] = False
+        ips["medical-insights"] = False
+        ips["translate"] = ""
+        ips["output"] = ""
