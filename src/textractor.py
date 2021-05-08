@@ -104,8 +104,8 @@ class Textractor:
         ips["documents"] = [event["document"]]
         ips["awsRegion"] = event["region"]
         ips["text"] = True
+        ips["tables"] = event["tables"]
         ips["forms"] = False
-        ips["tables"] = False
         ips["insights"] = False
         ips["medical-insights"] = False
         ips["translate"] = ""
@@ -177,10 +177,12 @@ class Textractor:
 def handler(event, context):
     return Textractor().run(True, event)
 
-# if __name__ == "__main__":
-#     event = {
-#         'bucketName': "bucket413",
-#         'document': "bf79622c-c382-4abf-9dfb-9c9e63711127.jpg",
-#         'region':"us-east-1"
-#     }
-#     a = handler(dict(event), None)
+if __name__ == "__main__":
+    # event = {
+    #     'bucketName': "bucket413",
+    #     'document': "be3b2d51-a238-484e-9358-3bd00328b7c5.pdf",
+    #     'region':"us-east-1",
+    #     "tables": True
+    # }
+    # a = handler(dict(event), None)
+    # print(a)

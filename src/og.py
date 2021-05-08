@@ -46,11 +46,11 @@ class OutputGenerator:
         csvFieldNames = ['Text', 'Width', 'Height', 'Left', 'Top']
         FileHelper.writeCSV("{}-page-{}-text-inreadingorder.csv".format(self.fileName, p), csvFieldNames, csvData)
 
-    def _returnJSON(self, page, p):
+    def _returnJSON(self, page):
         jsonData = []
         jsonFieldNames = ['Text', 'Width', 'Height', 'Left', 'Top']
         linestInReadingOrder = page.getLinesInReadingOrder()
-        for line in linestInReadingOrder:
+        for line in linestInReadingOrder:                
             jsonItem = dict(zip(jsonFieldNames, line[1:]))
             jsonData.append(jsonItem)
         return jsonData
@@ -86,7 +86,6 @@ class OutputGenerator:
         FileHelper.writeCSV("{}-page-{}-forms.csv".format(self.fileName, p), csvFieldNames, csvData)
 
     def _outputTable(self, page, p):
-
         csvData = []
         for table in page.tables:
             csvRow = []
@@ -99,22 +98,35 @@ class OutputGenerator:
                 csvData.append(csvRow)
             csvData.append([])
             csvData.append([])
-
         FileHelper.writeCSVRaw("{}-page-{}-tables.csv".format(self.fileName, p), csvData)
 
-    def run(self):
+    def _returnTable(self, page):
+        csvData = []
+        for table in page.tables:
+            csvRow = []
+            for row in table.rows:
+                csvRow  = []
+                for cell in row.cells:
+                    csvRow.append(cell.text)
+                csvData.append(csvRow)
+        return csvData
 
+    def _applyCustomDrill(self, fn):
+        result = {}
+        p = 1
+        for page in self.document.pages:
+            result[f'page_{p}'] = fn(page)
+            p = p + 1
+        return result
+
+    def run(self):
         if(not self.document.pages):
             return
-
-
         print("Total Pages in Document: {}".format(len(self.document.pages)))
-
-        p = 1
         result = {}
-        for page in self.document.pages:
-            result[f'page_{p}'] = self._returnJSON(page, p)
-            p = p + 1
+        result['words'] = self._applyCustomDrill(self._returnJSON)
+        if self.tables:
+            result['tables'] = self._applyCustomDrill(self._returnTable)
         return result
 
     def _insights(self, start, subText, sentiment, syntax, entities, keyPhrases, ta):
