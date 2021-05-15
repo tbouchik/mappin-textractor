@@ -178,11 +178,11 @@ def handler(event, context):
     return Textractor().run(True, event)
 
 if __name__ == "__main__":
-    # event = {
-    #     'bucketName': "bucket413",
-    #     'document': "be3b2d51-a238-484e-9358-3bd00328b7c5.pdf",
-    #     'region':"us-east-1",
-    #     "tables": True
-    # }
-    # a = handler(dict(event), None)
-    # print(a)
+    event = {
+        'bucketName': "bucket413",
+        'document': "be3b2d51-a238-484e-9358-3bd00328b7c5.pdf",
+        'region':"us-east-1",
+        "tables": True
+    }
+    a = handler(dict(event), None)
+    print(a)

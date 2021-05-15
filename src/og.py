@@ -123,6 +123,7 @@ class OutputGenerator:
                     for statementHeader, indObj in bankHeadersIndices.items():
                         idx = indObj['index']
                         jsonItem[statementHeader] = row.cells[idx].text
+                    jsonItem['Compte'] = None
                     jsonData.append(jsonItem)
                     ccPartyStatement = BankStatement.getCounterpartyStatement(jsonItem)
                     jsonData.append(ccPartyStatement)
