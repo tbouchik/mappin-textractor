@@ -2,6 +2,7 @@ import json
 from helper import FileHelper
 from ta import TextAnalyzer, TextMedicalAnalyzer, TextTranslater
 from trp import *
+from postprocess import BankStatement
 
 class OutputGenerator:
     def __init__(self, response, fileName, forms, tables):
@@ -46,7 +47,7 @@ class OutputGenerator:
         csvFieldNames = ['Text', 'Width', 'Height', 'Left', 'Top']
         FileHelper.writeCSV("{}-page-{}-text-inreadingorder.csv".format(self.fileName, p), csvFieldNames, csvData)
 
-    def _returnJSON(self, page):
+    def _parseWordsToJSON(self, page):
         jsonData = []
         jsonFieldNames = ['Text', 'Width', 'Height', 'Left', 'Top']
         linestInReadingOrder = page.getLinesInReadingOrder()
@@ -95,12 +96,12 @@ class OutputGenerator:
                 csvRow  = []
                 for cell in row.cells:
                     csvRow.append(cell.text)
-                csvData.append(csvRow)
+                csvData.append(csvRow) 
             csvData.append([])
             csvData.append([])
         FileHelper.writeCSVRaw("{}-page-{}-tables.csv".format(self.fileName, p), csvData)
 
-    def _returnTable(self, page):
+    def _parseTablesToArray(self, page):
         csvData = []
         for table in page.tables:
             csvRow = []
@@ -111,7 +112,23 @@ class OutputGenerator:
                 csvData.append(csvRow)
         return csvData
 
-    def _applyCustomDrill(self, fn):
+    def _parseTablesToJSON(self, page):
+        jsonData = []
+        for table in page.tables:
+            headers = BankStatement.getHeaders(table)
+            bankHeadersIndices = BankStatement.findHeadersIndices(headers)
+            if BankStatement.hasValidHeaders(bankHeadersIndices):
+                for row in table.rows[1:]:
+                    jsonItem = {}
+                    for statementHeader, indObj in bankHeadersIndices.items():
+                        idx = indObj['index']
+                        jsonItem[statementHeader] = row.cells[idx].text
+                    jsonData.append(jsonItem)
+                    ccPartyStatement = BankStatement.getCounterpartyStatement(jsonItem)
+                    jsonData.append(ccPartyStatement)
+        return jsonData
+
+    def _applyParserToDocumentPages(self, fn):
         result = {}
         p = 1
         for page in self.document.pages:
@@ -124,9 +141,9 @@ class OutputGenerator:
             return
         print("Total Pages in Document: {}".format(len(self.document.pages)))
         result = {}
-        result['words'] = self._applyCustomDrill(self._returnJSON)
+        result['words'] = self._applyParserToDocumentPages(self._parseWordsToJSON)
         if self.tables:
-            result['tables'] = self._applyCustomDrill(self._returnTable)
+            result['tables'] = self._applyParserToDocumentPages(self._parseTablesToJSON)
         return result
 
     def _insights(self, start, subText, sentiment, syntax, entities, keyPhrases, ta):
