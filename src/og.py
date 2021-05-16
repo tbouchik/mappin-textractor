@@ -123,10 +123,11 @@ class OutputGenerator:
                     for statementHeader, indObj in bankHeadersIndices.items():
                         idx = indObj['index']
                         jsonItem[statementHeader] = row.cells[idx].text
-                    jsonItem['Compte'] = None
-                    jsonData.append(jsonItem)
-                    ccPartyStatement = BankStatement.getCounterpartyStatement(jsonItem)
-                    jsonData.append(ccPartyStatement)
+                    if BankStatement.isValidStatement(jsonItem):
+                        jsonItem['Compte'] = None
+                        jsonData.append(jsonItem)
+                        ccPartyStatement = BankStatement.getCounterpartyStatement(jsonItem)
+                        jsonData.append(ccPartyStatement)
         return jsonData
 
     def _applyParserToDocumentPages(self, fn):

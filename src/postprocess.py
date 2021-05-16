@@ -3,8 +3,8 @@ from scipy.optimize import linear_sum_assignment
 from numpy import array
 import operator
 
-dateChoices = ["Date", "Date Opération"]
-designationChoices = ["Désignation", "Nature de l'opération"]
+dateChoices = ["Date", "Date Opération", "Oper", "Dates", "Dates Oper"]
+designationChoices = ["Désignation", "Nature de l'opération", "Operation-reference", "Reference", "Operation"]
 debitChoices = ["Débit"]
 creditChoices = ["Crédit"]
 
@@ -85,6 +85,13 @@ class BankStatement:
                 if counter == 2:
                     result = False
                     break
+        return result
+
+    @staticmethod
+    def isValidStatement(statement):
+        result = True
+        if (statement['Debit'] == None or statement['Debit'] == "") and (statement['Credit'] == None or statement['Credit'] == ""):
+            result = False
         return result
 
     @staticmethod
