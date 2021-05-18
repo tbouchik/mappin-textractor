@@ -92,6 +92,8 @@ class BankStatement:
         result = True
         if (statement['Debit'] == None or statement['Debit'] == "") and (statement['Credit'] == None or statement['Credit'] == ""):
             result = False
+        if statement['Date'] == '' or statement['Date'] is None:
+            return False
         return result
 
     @staticmethod

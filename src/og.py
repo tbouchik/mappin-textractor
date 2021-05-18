@@ -124,7 +124,7 @@ class OutputGenerator:
                         idx = indObj['index']
                         jsonItem[statementHeader] = row.cells[idx].text
                     if BankStatement.isValidStatement(jsonItem):
-                        jsonItem['Compte'] = None
+                        jsonItem['Compte'] = ''
                         jsonData.append(jsonItem)
                         ccPartyStatement = BankStatement.getCounterpartyStatement(jsonItem)
                         jsonData.append(ccPartyStatement)
