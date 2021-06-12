@@ -2,6 +2,7 @@ from fuzzywuzzy import process
 from scipy.optimize import linear_sum_assignment
 from numpy import array
 import operator
+import re
 
 dateChoices = ["Date", "Date Opération", "Oper", "Dates", "Dates Oper"]
 designationChoices = ["Désignation", "Nature de l'opération", "Operation-reference", "Reference", "Operation"]
@@ -63,6 +64,7 @@ class BankStatement:
             result = statementItem.copy()
             result['Credit'] = statementItem['Debit']
             result['Debit'] = statementItem['Credit']
+            result['Compte'] = '51410000'
         return result
 
     @staticmethod
@@ -92,9 +94,32 @@ class BankStatement:
         result = True
         if (statement['Debit'] == None or statement['Debit'] == "") and (statement['Credit'] == None or statement['Credit'] == ""):
             result = False
+        if (not BankStatement.hasValidPrice(statement['Debit'])) and (not BankStatement.hasValidPrice(statement['Credit'])):
+            return False
         if statement['Date'] == '' or statement['Date'] is None:
             return False
         return result
+
+    @staticmethod
+    def parsePrice(priceString):
+        match = None
+        if type(priceString) is str:
+            match = re.match(r"^\d+([.,]\d{1,2})*", priceString)
+        return match[0] if match else None
+    
+    @staticmethod
+    def hasValidPrice(priceString):
+        match = None
+        if type(priceString) is str:
+            match = re.match(r"^\d+([.,]\d{1,2})*", priceString)
+        return match is not None and len(match[0]) + 3 >= len(priceString.strip())
+
+    @staticmethod
+    def parseEntry(entry, header):
+        if (header=='Debit' or header == 'Credit') and type(entry) is str:
+            return BankStatement.parsePrice(entry)
+        else:
+            return entry
 
     @staticmethod
     def findHeadersIndices(itemsList, minTreshold=60):
