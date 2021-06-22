@@ -5,7 +5,7 @@ import operator
 import re
 
 dateChoices = ["Date", "Date Opération", "Oper", "Dates", "Dates Oper"]
-designationChoices = ["Désignation", "Nature de l'opération", "Operation-reference", "Reference", "Operation"]
+designationChoices = ["Désignation", "Nature de l'opération", "Operation-reference", "Reference", "Libellé", "Libelle"]
 debitChoices = ["Débit"]
 creditChoices = ["Crédit"]
 
