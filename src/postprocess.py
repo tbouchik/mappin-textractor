@@ -104,7 +104,7 @@ class BankStatement:
     def parsePrice(priceString):
         match = None
         if type(priceString) is str:
-            match = re.match(r"^\d+([.,]\d{1,2})*", priceString)
+            match = re.match(r"^([\d. ]+)([.,]\d{1,2})*", priceString)
         return match[0] if match else None
     
     @staticmethod
