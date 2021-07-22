@@ -122,7 +122,7 @@ class OutputGenerator:
                     jsonItem = {}
                     for statementHeader, indObj in bankHeadersIndices.items():
                         idx = indObj['index']
-                        jsonItem[statementHeader] = BankStatement.parseEntry(row.cells[idx].text, statementHeader)
+                        jsonItem[statementHeader] = BankStatement.parseEntry(row.cells[idx].text, statementHeader) if idx is not None else None
                     if BankStatement.isValidStatement(jsonItem):
                         jsonItem['Compte'] = ''
                         jsonData.append(jsonItem)
