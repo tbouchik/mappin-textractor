@@ -6,8 +6,8 @@ import re
 
 dateChoices = ["Date", "Date Opération", "Oper", "Dates", "Dates Oper"]
 designationChoices = ["Désignation", "Nature de l'opération", "Operation-reference", "Reference", "Libellé", "Libelle"]
-debitChoices = ["Débit"]
-creditChoices = ["Crédit"]
+debitChoices = ["Débit", "DEBIT", "Debit", "Debit airla"]
+creditChoices = ["Crédit", "CREDIT", "Credit", "Credit airla"]
 
 
 class Tinder:
@@ -111,7 +111,7 @@ class BankStatement:
     def hasValidPrice(priceString):
         match = None
         if type(priceString) is str:
-            match = re.match(r"^\d+([.,]\d{1,2})*", priceString)
+            match = re.match(r"^([\d. ]+)([.,]\d{1,2})*", priceString)
         return match is not None and len(match[0]) + 3 >= len(priceString.strip())
 
     @staticmethod
