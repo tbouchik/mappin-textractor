@@ -64,7 +64,7 @@ class BankStatement:
             result = statementItem.copy()
             result['Credit'] = statementItem['Debit']
             result['Debit'] = statementItem['Credit']
-            result['Compte'] = '51410000'
+            result['Compte'] = {'Text':'51410000', 'Bbox': None}
         return result
 
     @staticmethod

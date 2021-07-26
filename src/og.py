@@ -129,7 +129,7 @@ class OutputGenerator:
                                                             'Width': row.cells[idx].geometry.boundingBox.width, 
                                                             'Height': row.cells[idx].geometry.boundingBox.height}
                     if BankStatement.isValidStatement(jsonItem):
-                        jsonItem['Compte'] = ''
+                        jsonItem['Compte'] = {'Text':'', 'Bbox': None}
                         jsonData.append(jsonItem)
                         ccPartyStatement = BankStatement.getCounterpartyStatement(jsonItem)
                         jsonData.append(ccPartyStatement)
