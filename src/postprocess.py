@@ -92,11 +92,11 @@ class BankStatement:
     @staticmethod
     def isValidStatement(statement):
         result = True
-        if (statement['Debit'] == None or statement['Debit'] == "") and (statement['Credit'] == None or statement['Credit'] == ""):
+        if (statement['Debit']['Text'] == None or statement['Debit']['Text'] == "") and (statement['Credit']['Text'] == None or statement['Credit']['Text'] == ""):
             result = False
-        if (not BankStatement.hasValidPrice(statement['Debit'])) and (not BankStatement.hasValidPrice(statement['Credit'])):
+        if (not BankStatement.hasValidPrice(statement['Debit']['Text'])) and (not BankStatement.hasValidPrice(statement['Credit']['Text'])):
             return False
-        if statement['Date'] == '' or statement['Date'] is None:
+        if statement['Date']['Text'] == '' or statement['Date']['Text'] is None:
             return False
         return result
 

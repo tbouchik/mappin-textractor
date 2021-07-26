@@ -122,7 +122,12 @@ class OutputGenerator:
                     jsonItem = {}
                     for statementHeader, indObj in bankHeadersIndices.items():
                         idx = indObj['index']
-                        jsonItem[statementHeader] = BankStatement.parseEntry(row.cells[idx].text, statementHeader) if idx is not None else None
+                        jsonItem[statementHeader] = {}
+                        jsonItem[statementHeader]['Text'] = BankStatement.parseEntry(row.cells[idx].text, statementHeader) if idx is not None else None
+                        jsonItem[statementHeader]['Bbox'] = {'Left': row.cells[idx].geometry.boundingBox.left, 
+                                                            'Top': row.cells[idx].geometry.boundingBox.top, 
+                                                            'Width': row.cells[idx].geometry.boundingBox.width, 
+                                                            'Height': row.cells[idx].geometry.boundingBox.height}
                     if BankStatement.isValidStatement(jsonItem):
                         jsonItem['Compte'] = ''
                         jsonData.append(jsonItem)
